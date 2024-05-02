@@ -47,7 +47,7 @@ class MainActivity : ComponentActivity(), PetsCallback {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        dataSource.findAllPets(this,30)
+        dataSource.findAllPets(this,20)
         setContent {
             MyDogCatTheme {
                 Surface(
