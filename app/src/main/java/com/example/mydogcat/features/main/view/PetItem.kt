@@ -1,4 +1,4 @@
-package com.example.mydogcat.view
+package com.example.mydogcat.features.main.view
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -28,6 +28,7 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat.startActivity
 import com.example.mydogcat.R
+import com.example.mydogcat.features.details.view.DetailsActivity
 import com.example.mydogcat.model.Pet
 import com.squareup.picasso.Picasso
 import kotlinx.coroutines.Dispatchers

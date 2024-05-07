@@ -1,4 +1,4 @@
-package com.example.mydogcat.view
+package com.example.mydogcat.features.about.view
 
 import android.content.Intent
 import android.net.Uri

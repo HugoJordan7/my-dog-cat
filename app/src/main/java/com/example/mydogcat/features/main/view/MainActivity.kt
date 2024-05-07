@@ -1,8 +1,7 @@
-package com.example.mydogcat.view
+package com.example.mydogcat.features.main.view
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -31,6 +30,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.mydogcat.R
 import com.example.mydogcat.data.PetRemoteDataSource
+import com.example.mydogcat.features.about.view.AboutActivity
 import com.example.mydogcat.model.Pet
 import com.example.mydogcat.ui.theme.CelestialBlue80
 import com.example.mydogcat.ui.theme.MyDogCatTheme
@@ -68,7 +68,7 @@ class MainActivity : ComponentActivity(), PetsCallback {
                 painter = painterResource(id = R.drawable.info),
                 modifier = Modifier
                     .clickable {
-                        startActivity(Intent(this@MainActivity,AboutActivity::class.java))
+                        startActivity(Intent(this@MainActivity, AboutActivity::class.java))
                     }
                     .align(Alignment.TopEnd)
                     .padding(20.dp),

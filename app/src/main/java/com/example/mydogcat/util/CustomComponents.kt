@@ -19,7 +19,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.example.mydogcat.model.Pet
-import com.example.mydogcat.view.PetItem
+import com.example.mydogcat.features.main.view.PetItem
 
 @Composable
 fun ProgressBar(xOffset: Dp = 0.dp, yOffset: Dp = 0.dp){
