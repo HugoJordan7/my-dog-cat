@@ -31,14 +31,18 @@ import androidx.compose.ui.unit.sp
 import com.example.mydogcat.R
 import com.example.mydogcat.data.PetRemoteDataSource
 import com.example.mydogcat.features.about.view.AboutActivity
+import com.example.mydogcat.features.main.viewModel.MainViewModel
 import com.example.mydogcat.model.Pet
 import com.example.mydogcat.ui.theme.CelestialBlue80
 import com.example.mydogcat.ui.theme.MyDogCatTheme
 import com.example.mydogcat.util.PetRecyclerView
 import com.example.mydogcat.util.PetsCallback
 import com.example.mydogcat.util.ProgressBar
+import org.koin.android.ext.android.inject
 
 class MainActivity : ComponentActivity(), PetsCallback {
+
+    private val viewModel: MainViewModel by inject()
 
     private var progressIsVisible = mutableStateOf(true)
     private val dataSource = PetRemoteDataSource()
