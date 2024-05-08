@@ -19,6 +19,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -40,18 +41,13 @@ import com.example.mydogcat.util.PetsCallback
 import com.example.mydogcat.util.ProgressBar
 import org.koin.android.ext.android.inject
 
-class MainActivity : ComponentActivity(), PetsCallback {
+class MainActivity : ComponentActivity() {
 
     private val viewModel: MainViewModel by inject()
 
-    private var progressIsVisible = mutableStateOf(true)
-    private val dataSource = PetsRemoteDataSource()
-    private var catsState: MutableState<List<Pet>> = mutableStateOf(emptyList())
-    private var dogsState: MutableState<List<Pet>> = mutableStateOf(emptyList())
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        dataSource.findAllPets(this,20)
+        viewModel.findAllPets(20)
         setContent {
             MyDogCatTheme {
                 Surface(
@@ -62,12 +58,14 @@ class MainActivity : ComponentActivity(), PetsCallback {
                 }
             }
         }
+
+
     }
 
     @Composable
     fun MyApp() {
         Box(modifier = Modifier.fillMaxSize()) {
-            if(progressIsVisible.value) ProgressBar()
+            if(viewModel.progressState.value) ProgressBar()
             Image(
                 painter = painterResource(id = R.drawable.info),
                 modifier = Modifier
@@ -90,7 +88,7 @@ class MainActivity : ComponentActivity(), PetsCallback {
             Row {
                 PetRecyclerView(
                     context = this@MainActivity,
-                    petsState = dogsState,
+                    petsState = viewModel.dogsState,
                     verticalArrangement = Arrangement.Top,
                     horizontalAlignment = Alignment.Start,
                     xOffset = 13.dp,
@@ -99,7 +97,7 @@ class MainActivity : ComponentActivity(), PetsCallback {
                 Spacer(modifier = Modifier.width(40.dp))
                 PetRecyclerView(
                     context = this@MainActivity,
-                    petsState = catsState,
+                    petsState = viewModel.catsState,
                     verticalArrangement = Arrangement.Top,
                     horizontalAlignment = Alignment.Start,
                     xOffset = (-13).dp,
@@ -122,20 +120,4 @@ class MainActivity : ComponentActivity(), PetsCallback {
         }
     }
 
-    override fun onSuccess(pets: Pair<List<Pet>, List<Pet>>) {
-        dogsState.value = pets.first.filter { pet ->
-            !pet.url.contains(".gif")
-        }
-        catsState.value = pets.second.filter{ pet ->
-            !pet.url.contains(".gif")
-        }
-    }
-
-    override fun onFailure(message: String) {
-        Toast.makeText(this,"Erro ao exibir imagens!",Toast.LENGTH_LONG).show()
-    }
-
-    override fun onComplete() {
-        progressIsVisible.value = false
-    }
 }

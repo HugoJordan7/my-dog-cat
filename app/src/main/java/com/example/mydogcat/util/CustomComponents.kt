@@ -13,6 +13,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.State
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -40,7 +41,7 @@ fun ProgressBar(xOffset: Dp = 0.dp, yOffset: Dp = 0.dp){
 @Composable
 fun PetRecyclerView(
     context: Context,
-    petsState: MutableState<List<Pet>>,
+    petsState: State<List<Pet>>,
     verticalArrangement: Arrangement.Vertical,
     horizontalAlignment: Alignment.Horizontal,
     xOffset: Dp = 0.dp, yOffset: Dp = 0.dp
