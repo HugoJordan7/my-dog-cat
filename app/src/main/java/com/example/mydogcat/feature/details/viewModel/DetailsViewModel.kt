@@ -23,7 +23,7 @@ class DetailsViewModel(private val repository: PetRepository): ViewModel(), PetD
 
 
     fun findPetDetails(pet: Pet){
-        repository.findPetDetails(this,pet)
+        //repository.findPetDetails(this,pet)
     }
 
     override fun onSuccess(petDetails: PetDetails) {

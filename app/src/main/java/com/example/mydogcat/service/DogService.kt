@@ -8,19 +8,17 @@ import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
 
-interface PetAPI { // Agora isso é o PetService
-
+interface DogService {
     @GET("search")
-    fun findPetList(
+    fun findDogs(
         @Query("limit") limit: Int,
         @Query("api_key") apiKey: String = API_KEY,
         @Query("has_breeds") hasBreeds: Int = 0
     ): Call<List<Pet>>
 
     @GET("{id}")
-    fun findPetDetails(
+    fun findDogDetails(
         @Path("id") id: String,
         @Query("api_key") apiKey: String = API_KEY
     ): Call<PetDetails>
-
 }
