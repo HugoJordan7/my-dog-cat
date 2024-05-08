@@ -1,4 +1,4 @@
-package com.example.mydogcat.data
+package com.example.mydogcat.service
 
 import com.example.mydogcat.model.Pet
 import com.example.mydogcat.model.PetDetails

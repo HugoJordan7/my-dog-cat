@@ -1,9 +1,9 @@
 package com.example.mydogcat.di
 
-import com.example.mydogcat.features.details.data.DetailsRepository
-import com.example.mydogcat.features.details.viewModel.DetailsViewModel
-import com.example.mydogcat.features.main.data.MainRepository
-import com.example.mydogcat.features.main.viewModel.MainViewModel
+import com.example.mydogcat.service.repository.DetailsRepository
+import com.example.mydogcat.feature.details.viewModel.DetailsViewModel
+import com.example.mydogcat.service.repository.MainRepository
+import com.example.mydogcat.feature.main.viewModel.MainViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 

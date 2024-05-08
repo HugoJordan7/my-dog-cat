@@ -1,4 +1,4 @@
-package com.example.mydogcat.features.details.view
+package com.example.mydogcat.feature.details.view
 
 import android.os.Bundle
 import android.widget.Toast
@@ -29,9 +29,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.mydogcat.data.PetRemoteDataSource
 import com.example.mydogcat.model.Pet
 import com.example.mydogcat.model.PetDetails
+import com.example.mydogcat.service.PetDetailsRemoteDataSource
 import com.example.mydogcat.ui.theme.CelestialBlue80
 import com.example.mydogcat.ui.theme.MyDogCatTheme
 import com.example.mydogcat.util.PetDetailsCallback
@@ -44,7 +44,7 @@ class DetailsActivity : ComponentActivity(), PetDetailsCallback {
 
     private var progressIsVisible = mutableStateOf(true)
     private var petDetailsState: MutableState<PetDetails?> = mutableStateOf(null)
-    private val dataSource = PetRemoteDataSource()
+    private val dataSource = PetDetailsRemoteDataSource()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

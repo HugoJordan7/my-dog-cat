@@ -1,6 +1,7 @@
 package com.example.mydogcat
 
 import android.app.Application
+import com.example.mydogcat.di.remoteDataSourceModule
 import com.example.mydogcat.di.repositoryModule
 import com.example.mydogcat.di.viewModelModule
 import org.koin.android.ext.koin.androidContext
@@ -18,7 +19,8 @@ class App : Application() {
             modules(
                 listOf(
                     repositoryModule,
-                    viewModelModule
+                    viewModelModule,
+                    remoteDataSourceModule
                 )
             )
         }

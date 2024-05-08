@@ -1,8 +1,5 @@
-package com.example.mydogcat.data
+package com.example.mydogcat.service
 
-import okhttp3.Interceptor
-import okhttp3.OkHttpClient
-import okhttp3.Request
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 

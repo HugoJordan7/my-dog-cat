@@ -1,4 +1,4 @@
-package com.example.mydogcat.features.splash.view
+package com.example.mydogcat.feature.splash.view
 
 import android.annotation.SuppressLint
 import android.content.Intent
@@ -26,7 +26,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.mydogcat.R
-import com.example.mydogcat.features.main.view.MainActivity
+import com.example.mydogcat.feature.main.view.MainActivity
 import com.example.mydogcat.ui.theme.MyDogCatTheme
 import com.example.mydogcat.util.ProgressBar
 
