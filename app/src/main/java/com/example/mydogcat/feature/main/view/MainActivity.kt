@@ -18,9 +18,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -32,12 +29,9 @@ import androidx.compose.ui.unit.sp
 import com.example.mydogcat.R
 import com.example.mydogcat.feature.about.view.AboutActivity
 import com.example.mydogcat.feature.main.viewModel.MainViewModel
-import com.example.mydogcat.model.Pet
-import com.example.mydogcat.service.PetsRemoteDataSource
 import com.example.mydogcat.ui.theme.CelestialBlue80
 import com.example.mydogcat.ui.theme.MyDogCatTheme
 import com.example.mydogcat.util.PetRecyclerView
-import com.example.mydogcat.util.PetsCallback
 import com.example.mydogcat.util.ProgressBar
 import org.koin.android.ext.android.inject
 
@@ -66,6 +60,9 @@ class MainActivity : ComponentActivity() {
     fun MyApp() {
         Box(modifier = Modifier.fillMaxSize()) {
             if(viewModel.progressState.value) ProgressBar()
+            if(viewModel.errorMessageState.value.first) {
+                Toast.makeText(this@MainActivity,viewModel.errorMessageState.value.second, Toast.LENGTH_LONG).show()
+            }
             Image(
                 painter = painterResource(id = R.drawable.info),
                 modifier = Modifier

@@ -29,28 +29,25 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.mydogcat.feature.details.viewModel.DetailsViewModel
 import com.example.mydogcat.model.Pet
-import com.example.mydogcat.model.PetDetails
-import com.example.mydogcat.service.PetDetailsRemoteDataSource
 import com.example.mydogcat.ui.theme.CelestialBlue80
 import com.example.mydogcat.ui.theme.MyDogCatTheme
-import com.example.mydogcat.util.PetDetailsCallback
 import com.example.mydogcat.util.ProgressBar
 import com.squareup.picasso.Picasso
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import org.koin.android.ext.android.inject
 
-class DetailsActivity : ComponentActivity(), PetDetailsCallback {
+class DetailsActivity : ComponentActivity() {
 
-    private var progressIsVisible = mutableStateOf(true)
-    private var petDetailsState: MutableState<PetDetails?> = mutableStateOf(null)
-    private val dataSource = PetDetailsRemoteDataSource()
+    private val viewModel: DetailsViewModel by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val pet = intent.getBundleExtra("pet")?.getSerializable("pet") as Pet?
         if (pet == null) finish()
-        dataSource.findPetDetails(this, pet!!)
+        viewModel.findPetDetails(pet!!)
         setContent {
             MyDogCatTheme {
                 // A surface container using the 'background' color from the theme
@@ -68,8 +65,8 @@ class DetailsActivity : ComponentActivity(), PetDetailsCallback {
     fun MyApp() {
         Column(modifier = Modifier.fillMaxSize()) {
             val imageBitmap: MutableState<ImageBitmap?> = remember { mutableStateOf(null) }
-            petDetailsState.value?.let {
-                LaunchedEffect(petDetailsState.value) {
+            viewModel.petDetailsState.value?.let {
+                LaunchedEffect(it) {
                     withContext(Dispatchers.IO) {
                         val bitmap = Picasso.get().load(it.url).get()
                         imageBitmap.value = bitmap.asImageBitmap()
@@ -77,7 +74,7 @@ class DetailsActivity : ComponentActivity(), PetDetailsCallback {
                 }
             }
             ImageHeader(imageBitmap = imageBitmap.value)
-            petDetailsState.value?.breeds?.let {
+            viewModel.petDetailsState.value?.breeds?.let {
                 if (it.isEmpty()) return@let
                 Column(modifier = Modifier.fillMaxSize()) {
                     DetailsText(
@@ -112,7 +109,10 @@ class DetailsActivity : ComponentActivity(), PetDetailsCallback {
             }
         }
         Box(modifier = Modifier.fillMaxSize()){
-            if (progressIsVisible.value) ProgressBar()
+            if (viewModel.progressIsVisible.value) ProgressBar()
+            if(viewModel.errorMessageState.value.first) {
+                Toast.makeText(this@DetailsActivity,viewModel.errorMessageState.value.second, Toast.LENGTH_LONG).show()
+            }
         }
     }
 
@@ -188,15 +188,4 @@ class DetailsActivity : ComponentActivity(), PetDetailsCallback {
         }
     }
 
-    override fun onSuccess(petDetails: PetDetails) {
-        petDetailsState.value = petDetails
-    }
-
-    override fun onFailure(message: String) {
-        Toast.makeText(this, "Erro ao exibir detalhes do pet!", Toast.LENGTH_LONG).show()
-    }
-
-    override fun onComplete() {
-        progressIsVisible.value = false
-    }
 }
