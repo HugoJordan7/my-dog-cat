@@ -26,7 +26,7 @@ class DetailsViewModel(private val repository: PetRepository): ViewModel() {
     val isFailureState: State<Boolean> get() = _isFailureState
 
     fun findPetDetails(pet: Pet){
-        val callback = object : PetDetailsCallback{
+        val callback = object : PetDetailsCallback {
             override fun onSuccess(petDetails: PetDetails) {
                 _petDetailsState.value = petDetails
             }
