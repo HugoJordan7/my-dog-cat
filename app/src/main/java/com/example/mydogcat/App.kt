@@ -18,9 +18,9 @@ class App : Application() {
             androidContext(this@App)
             modules(
                 listOf(
+                    networkModule,
                     repositoryModule,
-                    viewModelModule,
-                    networkModule
+                    viewModelModule
                 )
             )
         }

@@ -4,7 +4,7 @@ import com.example.mydogcat.model.Pet
 import com.example.mydogcat.model.PetDetails
 
 interface PetsCallback {
-    fun onSuccess(pets: List<Pet>, petTypeName: String)
+    fun onSuccess(pets: List<Pet>)
     fun onFailure(message: String)
     fun onComplete()
 }

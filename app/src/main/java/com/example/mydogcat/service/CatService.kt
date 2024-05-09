@@ -11,14 +11,14 @@ import retrofit2.http.Query
 interface CatService {
 
     @GET("search")
-    fun findCats(
+    suspend fun findCats(
         @Query("limit") limit: Int
-    ): Call<List<Pet>>
+    ): List<Pet>
 
     @GET("{id}")
-    fun findCatDetails(
+    suspend fun findCatDetails(
         @Path("id") id: String,
         @Query("api_key") apiKey: String = API_KEY
-    ): Call<PetDetails>
+    ): PetDetails
 
 }

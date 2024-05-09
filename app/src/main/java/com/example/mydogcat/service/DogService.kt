@@ -10,15 +10,15 @@ import retrofit2.http.Query
 
 interface DogService {
     @GET("search")
-    fun findDogs(
+    suspend fun findDogs(
         @Query("limit") limit: Int,
         @Query("api_key") apiKey: String = API_KEY,
         @Query("has_breeds") hasBreeds: Int = 0
-    ): Call<List<Pet>>
+    ): List<Pet>
 
     @GET("{id}")
-    fun findDogDetails(
+    suspend fun findDogDetails(
         @Path("id") id: String,
         @Query("api_key") apiKey: String = API_KEY
-    ): Call<PetDetails>
+    ): PetDetails
 }

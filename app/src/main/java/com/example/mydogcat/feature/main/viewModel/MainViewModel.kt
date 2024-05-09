@@ -3,14 +3,15 @@ package com.example.mydogcat.feature.main.viewModel
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.mydogcat.model.Pet
 import com.example.mydogcat.service.repository.PetRepository
-import com.example.mydogcat.util.DOGS
 import com.example.mydogcat.util.PetsCallback
+import kotlinx.coroutines.launch
 
-class MainViewModel(
-    private val repository: PetRepository
-): ViewModel(), PetsCallback {
+class MainViewModel(private val repository: PetRepository) : ViewModel() {
+
+    private val limit = 20
 
     private val _catsState = mutableStateOf<List<Pet>>(emptyList())
     val catsState: State<List<Pet>> get() = _catsState
@@ -21,31 +22,55 @@ class MainViewModel(
     private var _progressState = mutableStateOf(true)
     val progressState: State<Boolean> get() = _progressState
 
-    private var _errorMessageState = mutableStateOf(Pair(false,""))
-    val errorMessageState: State<Pair<Boolean,String>> get() = _errorMessageState
+    private var _errorMessageState = mutableStateOf("")
+    val errorMessageState: State<String> get() = _errorMessageState
 
-    fun findAllPets(limit: Int){
-        repository.findDogs(this, limit)
-        repository.findCats(this, limit)
+    private var _isFailureState = mutableStateOf(false)
+    val isFailureState: State<Boolean> get() = _isFailureState
+
+    fun findAllPets() {
+        findAllDogs()
+        findAllCats()
     }
 
-    override fun onSuccess(pets: List<Pet>, petTypeName: String) {
-        if (petTypeName.equals(DOGS)){
-            _dogsState.value = pets.filter { pet ->
-                !pet.url.contains(".gif")
+    private fun findAllDogs() {
+        val callback = object : PetsCallback {
+            override fun onSuccess(pets: List<Pet>) {
+                _dogsState.value = pets.filter { pet ->
+                    !pet.url.contains(".gif")
+                }
             }
-        } else{
-            _catsState.value = pets.filter { pet ->
-                !pet.url.contains(".gif")
+            override fun onFailure(message: String) {
+                _isFailureState.value = true
+                _errorMessageState.value = "onFailure Dogs"
             }
+            override fun onComplete() {
+                _progressState.value = false
+            }
+        }
+        viewModelScope.launch {
+            repository.findDogs(callback, limit)
         }
     }
 
-    override fun onFailure(message: String) {
-        _errorMessageState.value = Pair(true,message)
+    private fun findAllCats() {
+        val callback = object : PetsCallback {
+            override fun onSuccess(pets: List<Pet>) {
+                _catsState.value = pets.filter { pet ->
+                    !pet.url.contains(".gif")
+                }
+            }
+            override fun onFailure(message: String) {
+                _isFailureState.value = true
+                _errorMessageState.value = "onFailure Cats"
+            }
+            override fun onComplete() {
+                _progressState.value = false
+            }
+        }
+        viewModelScope.launch {
+            repository.findCats(callback, limit)
+        }
     }
 
-    override fun onComplete() {
-        _progressState.value = false
-    }
 }

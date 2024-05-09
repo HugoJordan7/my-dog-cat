@@ -41,7 +41,7 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel.findAllPets(20)
+        viewModel.findAllPets()
         setContent {
             MyDogCatTheme {
                 Surface(
@@ -60,8 +60,8 @@ class MainActivity : ComponentActivity() {
     fun MyApp() {
         Box(modifier = Modifier.fillMaxSize()) {
             if(viewModel.progressState.value) ProgressBar()
-            if(viewModel.errorMessageState.value.first) {
-                Toast.makeText(this@MainActivity,viewModel.errorMessageState.value.second, Toast.LENGTH_LONG).show()
+            if(viewModel.isFailureState.value) {
+                Toast.makeText(this@MainActivity,viewModel.errorMessageState.value, Toast.LENGTH_LONG).show()
             }
             Image(
                 painter = painterResource(id = R.drawable.info),

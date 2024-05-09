@@ -110,8 +110,8 @@ class DetailsActivity : ComponentActivity() {
         }
         Box(modifier = Modifier.fillMaxSize()){
             if (viewModel.progressIsVisible.value) ProgressBar()
-            if(viewModel.errorMessageState.value.first) {
-                Toast.makeText(this@DetailsActivity,viewModel.errorMessageState.value.second, Toast.LENGTH_LONG).show()
+            if(viewModel.isFailureState.value) {
+                Toast.makeText(this@DetailsActivity,viewModel.errorMessageState.value, Toast.LENGTH_LONG).show()
             }
         }
     }
