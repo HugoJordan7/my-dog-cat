@@ -4,12 +4,20 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.mydogcat.base.BaseViewModel
+import com.example.mydogcat.base.Reducer
+import com.example.mydogcat.feature.main.event.MainEvent
+import com.example.mydogcat.feature.main.event.MainState
+import com.example.mydogcat.feature.main.reducer.MainReducer
 import com.example.mydogcat.model.Pet
 import com.example.mydogcat.service.repository.PetRepository
 import com.example.mydogcat.util.PetsCallback
 import kotlinx.coroutines.launch
 
-class MainViewModel(private val repository: PetRepository) : ViewModel() {
+class MainViewModel(
+    private val repository: PetRepository,
+    reducer: MainReducer
+): BaseViewModel<MainState,MainEvent>(reducer) {
 
     private val limit = 20
 
@@ -72,5 +80,7 @@ class MainViewModel(private val repository: PetRepository) : ViewModel() {
             repository.findCats(callback, limit)
         }
     }
+
+    override fun setInitialState(): MainState = MainState()
 
 }

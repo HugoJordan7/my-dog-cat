@@ -28,6 +28,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.mydogcat.R
 import com.example.mydogcat.feature.about.view.AboutActivity
+import com.example.mydogcat.feature.main.reducer.MainReducer
 import com.example.mydogcat.feature.main.viewModel.MainViewModel
 import com.example.mydogcat.ui.theme.CelestialBlue80
 import com.example.mydogcat.ui.theme.MyDogCatTheme
@@ -37,7 +38,7 @@ import org.koin.android.ext.android.inject
 
 class MainActivity : ComponentActivity() {
 
-    private val viewModel: MainViewModel by inject()
+    private lateinit var viewModel: MainViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,8 +53,6 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
-
-
     }
 
     @Composable
