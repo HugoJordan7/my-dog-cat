@@ -35,10 +35,11 @@ import com.example.mydogcat.ui.theme.MyDogCatTheme
 import com.example.mydogcat.util.PetRecyclerView
 import com.example.mydogcat.util.ProgressBar
 import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : ComponentActivity() {
 
-    private lateinit var viewModel: MainViewModel
+    private val viewModel: MainViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,9 +59,9 @@ class MainActivity : ComponentActivity() {
     @Composable
     fun MyApp() {
         Box(modifier = Modifier.fillMaxSize()) {
-            if(viewModel.progressState.value) ProgressBar()
-            if(viewModel.isFailureState.value) {
-                Toast.makeText(this@MainActivity,viewModel.errorMessageState.value, Toast.LENGTH_LONG).show()
+            if(viewModel.state.value.isProgress) ProgressBar()
+            if(viewModel.state.value.isFailure) {
+                Toast.makeText(this@MainActivity,viewModel.state.value.errorMessage, Toast.LENGTH_LONG).show()
             }
             Image(
                 painter = painterResource(id = R.drawable.info),
@@ -84,7 +85,7 @@ class MainActivity : ComponentActivity() {
             Row {
                 PetRecyclerView(
                     context = this@MainActivity,
-                    petsState = viewModel.dogsState,
+                    petsState = viewModel.state.value.dogs,
                     verticalArrangement = Arrangement.Top,
                     horizontalAlignment = Alignment.Start,
                     xOffset = 13.dp,
@@ -93,7 +94,7 @@ class MainActivity : ComponentActivity() {
                 Spacer(modifier = Modifier.width(40.dp))
                 PetRecyclerView(
                     context = this@MainActivity,
-                    petsState = viewModel.catsState,
+                    petsState = viewModel.state.value.cats,
                     verticalArrangement = Arrangement.Top,
                     horizontalAlignment = Alignment.Start,
                     xOffset = (-13).dp,

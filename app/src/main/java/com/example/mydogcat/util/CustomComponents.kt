@@ -41,7 +41,7 @@ fun ProgressBar(xOffset: Dp = 0.dp, yOffset: Dp = 0.dp){
 @Composable
 fun PetRecyclerView(
     context: Context,
-    petsState: State<List<Pet>>,
+    petsState: List<Pet>,
     verticalArrangement: Arrangement.Vertical,
     horizontalAlignment: Alignment.Horizontal,
     xOffset: Dp = 0.dp, yOffset: Dp = 0.dp
@@ -53,7 +53,7 @@ fun PetRecyclerView(
         verticalArrangement = verticalArrangement,
         horizontalAlignment = horizontalAlignment,
     ) {
-        items(petsState.value){ pet ->
+        items(petsState){ pet ->
             PetItem(context = context,pet = pet)
             Spacer(modifier = Modifier.height(15.dp))
         }

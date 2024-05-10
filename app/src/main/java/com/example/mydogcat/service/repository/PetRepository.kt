@@ -14,8 +14,6 @@ class PetRepository(private val catService: CatService, private val dogService: 
             callback.onSuccess(dogs)
         } catch (e: Exception) {
             callback.onFailure(e.message ?: "Unknown error")
-        } finally {
-            callback.onComplete()
         }
     }
 
@@ -25,8 +23,6 @@ class PetRepository(private val catService: CatService, private val dogService: 
             callback.onSuccess(cats)
         } catch (e: Exception) {
             callback.onFailure(e.message ?: "Unknown error")
-        } finally {
-            callback.onComplete()
         }
     }
 
@@ -37,8 +33,6 @@ class PetRepository(private val catService: CatService, private val dogService: 
             callback.onSuccess(dogDetails)
         } catch (e: Exception) {
             callback.onFailure(e.message.toString())
-        } finally {
-            callback.onComplete()
         }
     }
 
@@ -48,8 +42,6 @@ class PetRepository(private val catService: CatService, private val dogService: 
             callback.onSuccess(catDetails)
         } catch (e: Exception) {
             callback.onFailure(e.message.toString())
-        } finally {
-            callback.onComplete()
         }
     }
 

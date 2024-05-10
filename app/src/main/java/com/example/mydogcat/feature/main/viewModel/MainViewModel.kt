@@ -1,12 +1,9 @@
 package com.example.mydogcat.feature.main.viewModel
 
-import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.mydogcat.base.BaseViewModel
-import com.example.mydogcat.base.Reducer
 import com.example.mydogcat.feature.main.event.MainEvent
+import com.example.mydogcat.feature.main.event.MainEvent.*
 import com.example.mydogcat.feature.main.event.MainState
 import com.example.mydogcat.feature.main.reducer.MainReducer
 import com.example.mydogcat.model.Pet
@@ -17,26 +14,12 @@ import kotlinx.coroutines.launch
 class MainViewModel(
     private val repository: PetRepository,
     reducer: MainReducer
-): BaseViewModel<MainState,MainEvent>(reducer) {
+) : BaseViewModel<MainState, MainEvent>(reducer) {
 
     private val limit = 20
 
-    private val _catsState = mutableStateOf<List<Pet>>(emptyList())
-    val catsState: State<List<Pet>> get() = _catsState
-
-    private val _dogsState = mutableStateOf<List<Pet>>(emptyList())
-    val dogsState: State<List<Pet>> get() = _dogsState
-
-    private var _progressState = mutableStateOf(true)
-    val progressState: State<Boolean> get() = _progressState
-
-    private var _errorMessageState = mutableStateOf("")
-    val errorMessageState: State<String> get() = _errorMessageState
-
-    private var _isFailureState = mutableStateOf(false)
-    val isFailureState: State<Boolean> get() = _isFailureState
-
     fun findAllPets() {
+        updateState(Loading)
         findAllDogs()
         findAllCats()
     }
@@ -44,16 +27,12 @@ class MainViewModel(
     private fun findAllDogs() {
         val callback = object : PetsCallback {
             override fun onSuccess(pets: List<Pet>) {
-                _dogsState.value = pets.filter { pet ->
-                    !pet.url.contains(".gif")
-                }
+                val dogs = pets.filter { !it.url.contains(".gif") }
+                updateState(ShowListDogs(dogs))
             }
+
             override fun onFailure(message: String) {
-                _isFailureState.value = true
-                _errorMessageState.value = "onFailure Dogs"
-            }
-            override fun onComplete() {
-                _progressState.value = false
+                updateState(Error(message))
             }
         }
         viewModelScope.launch {
@@ -64,16 +43,12 @@ class MainViewModel(
     private fun findAllCats() {
         val callback = object : PetsCallback {
             override fun onSuccess(pets: List<Pet>) {
-                _catsState.value = pets.filter { pet ->
-                    !pet.url.contains(".gif")
-                }
+                val cats = pets.filter { !it.url.contains(".gif") }
+                updateState(ShowListCats(cats))
             }
+
             override fun onFailure(message: String) {
-                _isFailureState.value = true
-                _errorMessageState.value = "onFailure Cats"
-            }
-            override fun onComplete() {
-                _progressState.value = false
+                updateState(Error(message))
             }
         }
         viewModelScope.launch {

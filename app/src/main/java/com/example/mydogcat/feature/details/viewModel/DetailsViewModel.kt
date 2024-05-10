@@ -5,13 +5,17 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.mydogcat.feature.details.reducer.DetailsReducer
 import com.example.mydogcat.model.Pet
 import com.example.mydogcat.model.PetDetails
 import com.example.mydogcat.service.repository.PetRepository
 import com.example.mydogcat.util.PetDetailsCallback
 import kotlinx.coroutines.launch
 
-class DetailsViewModel(private val repository: PetRepository): ViewModel() {
+class DetailsViewModel(
+    private val repository: PetRepository,
+    reducer: DetailsReducer
+): ViewModel() {
 
     private var _progressIsVisible = mutableStateOf(true)
     val progressIsVisible: State<Boolean> get() = _progressIsVisible
@@ -32,9 +36,6 @@ class DetailsViewModel(private val repository: PetRepository): ViewModel() {
             }
             override fun onFailure(message: String) {
                 _errorMessageState.value = message
-            }
-            override fun onComplete() {
-                _progressIsVisible.value = false
             }
         }
         viewModelScope.launch {
