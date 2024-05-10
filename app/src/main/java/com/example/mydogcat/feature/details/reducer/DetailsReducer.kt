@@ -8,8 +8,9 @@ class DetailsReducer: Reducer<DetailsState,DetailsEvent> {
     override fun invoke(state: DetailsState?, event: DetailsEvent): DetailsState {
         return state?.let {
             when(event){
-                is DetailsEvent.Initial -> state.copy(lastEvent = event)
-                is DetailsEvent.Final -> state.copy(lastEvent = event)
+                is DetailsEvent.Loading -> state.copy(lastEvent = event, isLoading = true, isFailure = false)
+                is DetailsEvent.ShowPetDetails -> state.copy(lastEvent = event, isLoading = false, isFailure = false, petDetails = event.petDetails)
+                is DetailsEvent.Error -> state.copy(lastEvent = event, isLoading = true, isFailure = false, errorMessage = event.message)
             }
         } ?: DetailsState()
     }

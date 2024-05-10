@@ -65,7 +65,7 @@ class DetailsActivity : ComponentActivity() {
     fun MyApp() {
         Column(modifier = Modifier.fillMaxSize()) {
             val imageBitmap: MutableState<ImageBitmap?> = remember { mutableStateOf(null) }
-            viewModel.petDetailsState.value?.let {
+            viewModel.state.value.petDetails?.let {
                 LaunchedEffect(it) {
                     withContext(Dispatchers.IO) {
                         val bitmap = Picasso.get().load(it.url).get()
@@ -74,7 +74,7 @@ class DetailsActivity : ComponentActivity() {
                 }
             }
             ImageHeader(imageBitmap = imageBitmap.value)
-            viewModel.petDetailsState.value?.breeds?.let {
+            viewModel.state.value.petDetails?.breeds?.let {
                 if (it.isEmpty()) return@let
                 Column(modifier = Modifier.fillMaxSize()) {
                     DetailsText(
@@ -109,9 +109,9 @@ class DetailsActivity : ComponentActivity() {
             }
         }
         Box(modifier = Modifier.fillMaxSize()){
-            if (viewModel.progressIsVisible.value) ProgressBar()
-            if(viewModel.isFailureState.value) {
-                Toast.makeText(this@DetailsActivity,viewModel.errorMessageState.value, Toast.LENGTH_LONG).show()
+            if (viewModel.state.value.isLoading) ProgressBar()
+            if(viewModel.state.value.isFailure) {
+                Toast.makeText(this@DetailsActivity,viewModel.state.value.errorMessage, Toast.LENGTH_LONG).show()
             }
         }
     }

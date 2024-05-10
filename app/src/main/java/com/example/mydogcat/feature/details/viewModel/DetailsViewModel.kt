@@ -1,10 +1,10 @@
 package com.example.mydogcat.feature.details.viewModel
 
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.mydogcat.base.BaseViewModel
+import com.example.mydogcat.feature.details.event.DetailsEvent
+import com.example.mydogcat.feature.details.event.DetailsEvent.*
+import com.example.mydogcat.feature.details.event.DetailsState
 import com.example.mydogcat.feature.details.reducer.DetailsReducer
 import com.example.mydogcat.model.Pet
 import com.example.mydogcat.model.PetDetails
@@ -15,27 +15,16 @@ import kotlinx.coroutines.launch
 class DetailsViewModel(
     private val repository: PetRepository,
     reducer: DetailsReducer
-): ViewModel() {
-
-    private var _progressIsVisible = mutableStateOf(true)
-    val progressIsVisible: State<Boolean> get() = _progressIsVisible
-
-    private var _petDetailsState: MutableState<PetDetails?> = mutableStateOf(null)
-    val petDetailsState: State<PetDetails?> get() = _petDetailsState
-
-    private var _errorMessageState = mutableStateOf("")
-    val errorMessageState: State<String> get() = _errorMessageState
-
-    private var _isFailureState = mutableStateOf(false)
-    val isFailureState: State<Boolean> get() = _isFailureState
+): BaseViewModel<DetailsState,DetailsEvent>(reducer) {
 
     fun findPetDetails(pet: Pet){
+        updateState(Loading)
         val callback = object : PetDetailsCallback {
             override fun onSuccess(petDetails: PetDetails) {
-                _petDetailsState.value = petDetails
+                updateState(ShowPetDetails(petDetails))
             }
             override fun onFailure(message: String) {
-                _errorMessageState.value = message
+                updateState(Error(message))
             }
         }
         viewModelScope.launch {
@@ -46,5 +35,7 @@ class DetailsViewModel(
             }
         }
     }
+
+    override fun setInitialState(): DetailsState = DetailsState()
 
 }
