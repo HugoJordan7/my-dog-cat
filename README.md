@@ -10,6 +10,7 @@ API utilizada: https://developers.thecatapi.com/view-account/ylX4blBYT9FaoVd6Ohv
 - Android Studio
 - Kotlin
 - JetPack Compose
+- Arquitetura MVI (model-view-intent)
 
 # Download atualizado (v1.0.0)
 Faça o download clicando [aqui.](https://github.com/HugoJordan7/MyDogCat/raw/main/MyDogCat.apk)
